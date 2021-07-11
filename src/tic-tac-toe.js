@@ -1,34 +1,73 @@
 class TicTacToe {
     constructor() {
+        this.currentPlayerSymbol = 'x';
+        this.winner = null;
+        this.finished = false;
+        this.board = [
+            [null, null, null],
+            [null, null, null],
+            [null, null, null],
+        ];
+    }
 
+    checkWin() {
+        
+        if (this.board[0][0] === this.board[1][1] && this.board[0][0] === this.board[2][2] && this.board[0][0] !== null) {
+            this.winner = this.board[0][0];
+            this.finished = true;
+        }
+      
+        if (this.board[0][2] === this.board[1][1] && this.board[0][2] === this.board[2][0] && this.board[0][2] !== null) {
+            this.winner = this.board[0][2];
+            this.finished = true;
+        }
+      
+        for (let i = 0; i < 3; i++) {
+            if (this.board[i][0] === this.board[i][1] && this.board[i][0] === this.board[i][2] && this.board[i][0] !== null) {
+                this.winner = this.board[i][0];
+                this.finished = true;
+            }
+            if (this.board[0][i] === this.board[1][i] && this.board[0][i] === this.board[2][i] && this.board[0][i] !== null) {
+                this.winner = this.board[0][i];
+                this.finished = true;
+            }
+        }
+
+        if (this.noMoreTurns()) {
+            this.finished = true;    
+        }
     }
 
     getCurrentPlayerSymbol() {
-
+        return this.currentPlayerSymbol;
     }
 
     nextTurn(rowIndex, columnIndex) {
-
+        if (this.board[columnIndex][rowIndex] === null) {
+            this.board[columnIndex][rowIndex] = this.currentPlayerSymbol;
+            this.checkWin();
+            this.currentPlayerSymbol = this.currentPlayerSymbol === 'x' ? 'o' : 'x';
+        }
     }
 
     isFinished() {
-
+        return this.finished;
     }
 
     getWinner() {
-
+        return this.winner;
     }
 
     noMoreTurns() {
-
+        return this.board.flat().every( (el) => el !== null);
     }
 
     isDraw() {
-
+        return this.noMoreTurns() && this.winner === null;
     }
 
     getFieldValue(rowIndex, colIndex) {
-
+        return this.board[colIndex][rowIndex];
     }
 }
 
